@@ -1,11 +1,8 @@
-import org.example.Fahrer;
-import org.example.Motorrad;
-import org.example.Rennstrecke;
-import org.example.SportMotorrad;
-import org.example.Wetter;
-import static org.junit.Assert.assertTrue;
+package org.example;
+
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class FahrerTest {
 
@@ -17,6 +14,6 @@ class FahrerTest {
         Wetter wetter = new Wetter(20, 10, 5);
 
         double rundenzeit = fahrer.berechneRundenzeit(strecke, wetter);
-        assertTrue(rundenzeit > 0, "Rundenzeit sollte positiv sein.");
+        Assertions.assertTrue(rundenzeit > 0, "Rundenzeit sollte positiv sein.");
     }
 }
