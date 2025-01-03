@@ -13,19 +13,23 @@ public class Fahrer {
         this.motorrad = motorrad;
     }
 
-    public double fahreRunde(Rennstrecke strecke, Wetter wetter) {
-        double basisZeit = motorrad.fahreRunde(strecke.getLaenge(), wetter);
-        double erfahrungsBonus = 1 - (erfahrung * 0.05);
-        double konditionsMalus = 1 + (10 - kondition) * 0.02;
-        return basisZeit * erfahrungsBonus * konditionsMalus;
-    }
-
     public String getName() {
         return name;
     }
 
-    public String getMotorradBeschreibung() {
-        return motorrad.getBeschreibung();
+    public Motorrad getMotorrad() {
+        return motorrad;
+    }
+
+    public double berechneRundenzeit(Rennstrecke strecke, Wetter wetter) {
+        double basisZeit = strecke.getLaenge() / motorrad.getGeschwindigkeit();
+        double schwierigkeit = 1 + strecke.getSchwierigkeit() * 0.1;
+        double wetterEffekt = wetter.berechneEinfluss();
+        double erfahrungsBonus = 1 - (erfahrung * 0.02);
+        double konditionPenalty = 1 + (10 - kondition) * 0.05;
+
+        return basisZeit * schwierigkeit * wetterEffekt * erfahrungsBonus * konditionPenalty;
     }
 }
+
 

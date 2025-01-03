@@ -1,22 +1,37 @@
 package org.example;
 
 public abstract class Motorrad {
-    protected String marke;
-    protected String modell;
-    protected int maxGeschwindigkeit;
-    protected int beschleunigung;
+    private String marke;
+    private String modell;
+    private int geschwindigkeit; // In km/h
+    private int beschleunigung; // In m/s²
 
-    public Motorrad(String marke, String modell, int maxGeschwindigkeit, int beschleunigung) {
+    public Motorrad(String marke, String modell, int geschwindigkeit, int beschleunigung) {
         this.marke = marke;
         this.modell = modell;
-        this.maxGeschwindigkeit = maxGeschwindigkeit;
+        this.geschwindigkeit = geschwindigkeit;
         this.beschleunigung = beschleunigung;
     }
 
-    public abstract double fahreRunde(double streckenLaenge, Wetter wetter);
+    public String getMarke() {
+        return marke;
+    }
 
-    public String getBeschreibung() {
-        return marke + " " + modell;
+    public String getModell() {
+        return modell;
+    }
+
+    public int getGeschwindigkeit() {
+        return geschwindigkeit;
+    }
+
+    public int getBeschleunigung() {
+        return beschleunigung;
     }
 }
+
+
+
+
+
 

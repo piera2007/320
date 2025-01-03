@@ -22,19 +22,32 @@ public class Rennen {
 
     public void starteRennen(int runden) {
         for (Fahrer fahrer : teilnehmer) {
-            double gesamtZeit = 0;
+            double gesamtzeit = 0;
             for (int runde = 1; runde <= runden; runde++) {
-                gesamtZeit += fahrer.fahreRunde(strecke, wetter);
+                gesamtzeit += fahrer.berechneRundenzeit(strecke, wetter);
             }
-            ergebnisse.put(fahrer, gesamtZeit);
+            ergebnisse.put(fahrer, gesamtzeit);
         }
     }
 
-    public void zeigeStatistik() {
-        System.out.println("Rennergebnisse:");
-        ergebnisse.forEach((fahrer, zeit) -> {
-            System.out.println(fahrer.getName() + " auf " + fahrer.getMotorradBeschreibung() + " - Zeit: " + zeit + " Sekunden");
-        });
+    public Fahrer getGewinner() {
+        Fahrer besterFahrer = null;
+        double besteZeit = Double.MAX_VALUE;
+
+        for (Fahrer fahrer : ergebnisse.keySet()) {
+            double zeit = ergebnisse.get(fahrer);
+            if (zeit < besteZeit) {
+                besteZeit = zeit;
+                besterFahrer = fahrer;
+            }
+        }
+
+        return besterFahrer;
+    }
+
+    public HashMap<Fahrer, Double> getErgebnisse() {
+        return ergebnisse;
     }
 }
+
 
