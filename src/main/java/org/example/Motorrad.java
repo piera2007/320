@@ -19,7 +19,7 @@ package org.example;
  * Diese Felder bestimmen die Grundeigenschaften eines
  * Motorrads, die in den Unterklassen weiter spezialisiert
  * werden können.
- * <p>
+ *
  * @author Piera Blum
  * @version 1.0
  */

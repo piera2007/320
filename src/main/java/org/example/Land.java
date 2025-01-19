@@ -19,7 +19,7 @@ public class Land {
     }
 
     /**
-     * @return Name des Landes
+     * @return name
      */
     public String getName() {
         return name;

@@ -115,7 +115,7 @@ public class Rennen {
     }
 
     /**
-     * @return HashMap<Fahrer, Double> mit finalen Zeiten
+     * @return ergebnisse HashMap<Fahrer, Double> mit finalen Zeiten
      */
     public HashMap<Fahrer, Double> getErgebnisse() {
         return ergebnisse;

@@ -26,21 +26,21 @@ public class Rennstrecke {
     }
 
     /**
-     * @return Name der Rennstrecke
+     * @return name der Rennstrecke
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return Länge in km
+     * @return laenge Länge in km
      */
     public double getLaenge() {
         return laenge;
     }
 
     /**
-     * @return Schwierigkeitsgrad (1-10)
+     * @return schwierigkeitsgrad (1-10)
      */
     public int getSchwierigkeitsgrad() {
         return schwierigkeitsgrad;

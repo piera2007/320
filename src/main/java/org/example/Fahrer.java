@@ -33,21 +33,21 @@ public class Fahrer {
     }
 
     /**
-     * @return Name des Fahrers
+     * @return fahrerName
      */
     public String getFahrerName() {
         return fahrerName;
     }
 
     /**
-     * @return Name des Landes
+     * @return land
      */
     public String getLand() {
         return land;
     }
 
     /**
-     * @return Erfahrung in Jahren
+     * @return erfahrung
      */
     public int getErfahrung() {
         return erfahrung;

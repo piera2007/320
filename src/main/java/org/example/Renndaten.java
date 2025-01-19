@@ -31,21 +31,21 @@ public class Renndaten {
     }
 
     /**
-     * @return Die HashMap (Fahrer -> Zeit)
+     * @return zeiten die HashMap (Fahrer -> Zeit)
      */
     public HashMap<Fahrer, Double> getZeiten() {
         return zeiten;
     }
 
     /**
-     * @return Der Sieger (null bei Unentschieden)
+     * @return sieger der Sieger (null bei Unentschieden)
      */
     public Fahrer getSieger() {
         return sieger;
     }
 
     /**
-     * @return Referenz auf das original Rennen
+     * @return rennen Referenz auf das original Rennen
      */
     public Rennen getRennen() {
         return rennen;

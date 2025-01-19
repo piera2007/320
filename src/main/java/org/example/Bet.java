@@ -24,14 +24,14 @@ public class Bet {
     }
 
     /**
-     * @return Fahrername
+     * @return fahrerName
      */
     public String getFahrerName() {
         return fahrerName;
     }
 
     /**
-     * @return Einsatz
+     * @return einsatz
      */
     public double getEinsatz() {
         return einsatz;
