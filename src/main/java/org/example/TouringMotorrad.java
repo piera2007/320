@@ -4,7 +4,7 @@ package org.example;
  * Konkrete Klasse TouringMotorrad.
  * Ausgewogene Werte, ideal für längere Strecken.
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class TouringMotorrad extends Motorrad {

@@ -5,21 +5,44 @@ import java.util.List;
 import java.util.HashMap;
 
 /**
- * Verwalter für Wetten (auf Fahrer).
+ * Die Klasse {@code BetManager} verwaltet die vom Benutzer
+ * platzierten Wetten und das Guthaben des Benutzers.
+ * <p>
+ * Beim Platzieren einer Wette wird der Einsatz vom Guthaben
+ * abgezogen. Wenn das Rennen beendet ist, wird der Sieger
+ * ermittelt und die Methode {@link #checkBets(String)} zahlt
+ * Gewinne aus und aktualisiert das Guthaben.
+ * <p>
+ * Folgende Hauptaufgaben werden hier erledigt:
+ * <ul>
+ *   <li>Verwaltung des Benutzer-Guthabens ({@code userBalance})</li>
+ *   <li>Speichern aller Wetten in einer Liste ({@code bets})</li>
+ *   <li>Abziehen des Wetteinsatzes beim Hinzufügen einer Wette</li>
+ *   <li>Auszahlung von Gewinnen bei eindeutigem Sieger</li>
+ *   <li>Anzeigen aller platzierten Wetten und deren Einsätze</li>
+ * </ul>
  *
- * - userBalance = Geld des Benutzers
- * - addBet() zieht Einsatz vom Guthaben ab
- * - checkBets() gibt den Gesamtgewinn zurück,
- *   aktualisiert userBalance
+ * @author Piera Blum
+ * @version 1.0
  */
 public class BetManager {
+
+    /**
+     * Eine Liste aller {@link Bet}-Objekte, die der Benutzer
+     * vor Start des Rennens platziert hat.
+     */
     private List<Bet> bets;
+
+    /**
+     * Das aktuelle Guthaben des Benutzers.
+     */
     private double userBalance;
 
     /**
-     * Konstruktor
+     * Erstellt einen neuen {@code BetManager}, der die Wetten
+     * des Benutzers und dessen Guthaben verwaltet.
      *
-     * @param startBalance Anfangsguthaben
+     * @param startBalance das Anfangsguthaben des Benutzers
      */
     public BetManager(double startBalance) {
         this.bets = new ArrayList<>();
@@ -27,10 +50,14 @@ public class BetManager {
     }
 
     /**
-     * Fügt eine Wette hinzu, wenn genug Guthaben vorhanden ist.
+     * Fügt eine neue Wette hinzu, sofern ausreichend Guthaben vorhanden ist.
+     * <p>
+     * Der Einsatz wird sofort vom Guthaben abgezogen. Falls das Guthaben
+     * nicht ausreicht, wird die Wette nicht gespeichert.
      *
-     * @param bet Wette
-     * @return true bei Erfolg, false wenn zu wenig Guthaben
+     * @param bet die zu platzierende Wette
+     * @return {@code true}, wenn die Wette erfolgreich hinzugefügt wurde,
+     *         {@code false}, wenn nicht genug Guthaben vorhanden ist
      */
     public boolean addBet(Bet bet) {
         if (bet.getEinsatz() > userBalance) {
@@ -42,8 +69,11 @@ public class BetManager {
     }
 
     /**
-     * Zeigt laufende Wetten gruppiert nach Fahrername,
-     * plus aktuelles Guthaben.
+     * Gibt alle laufenden Wetten zusammen mit den jeweiligen
+     * Einsätzen und dem aktuellen Guthaben auf der Konsole aus.
+     * <p>
+     * Falls keine Wetten vorliegen, wird dies entsprechend
+     * ausgegeben.
      */
     public void showAllBets() {
         if (bets.isEmpty()) {
@@ -69,19 +99,26 @@ public class BetManager {
     }
 
     /**
-     * Prüft Wetten bei eindeutigem Sieger (siegerName),
-     * bei unentschieden => 0.0
+     * Überprüft nach Ende eines Rennens, ob es einen eindeutigen
+     * Sieger gibt und zahlt eventuelle Gewinne aus.
+     * <p>
+     * Wenn {@code siegerName} leer oder {@code null} ist, gilt das Rennen
+     * als unentschieden, und alle Einsätze sind verloren. Wenn ein
+     * eindeutiger Sieger existiert, erhält der Benutzer für jede
+     * richtige Wette das Doppelte des Einsatzes.
      *
-     * @param siegerName Name des Siegers, "" oder null bei Unentschieden
-     * @return Gesamtgewinn (diese Summe kommt zum Guthaben dazu)
+     * @param siegerName der Name des siegreichen Fahrers (oder {@code ""}/{@code null} bei Unentschieden)
+     * @return die Gesamtsumme, die dem Benutzer als Gewinn
+     *         gutgeschrieben wird (falls keine richtige Wette
+     *         existiert, wird {@code 0.0} zurückgegeben)
      */
     public double checkBets(String siegerName) {
         if (bets.isEmpty()) {
             System.out.println("Keine Wetten vorhanden.");
             return 0.0;
         }
+        // Unentschieden
         if (siegerName == null || siegerName.isEmpty()) {
-            // unentschieden
             System.out.println("Unentschieden! Keine Gewinne.");
             bets.clear();
             return 0.0;
@@ -108,7 +145,9 @@ public class BetManager {
     }
 
     /**
-     * @return aktuelles Benutzer-Guthaben
+     * Liefert das aktuelle Guthaben des Benutzers zurück.
+     *
+     * @return der aktuelle Kontostand
      */
     public double getUserBalance() {
         return userBalance;

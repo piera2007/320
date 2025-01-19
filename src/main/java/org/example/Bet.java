@@ -5,7 +5,7 @@ package org.example;
  *
  * Speichert den Namen des Fahrers und den Einsatz.
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class Bet {

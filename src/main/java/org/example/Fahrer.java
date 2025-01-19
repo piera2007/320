@@ -11,7 +11,7 @@ package org.example;
  * So kann man mehrere Fahrer aus demselben Land haben,
  * aber unterschiedliche Namen und Erfahrung.
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class Fahrer {

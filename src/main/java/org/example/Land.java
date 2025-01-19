@@ -2,15 +2,12 @@ package org.example;
 
 /**
  * Repräsentiert ein Land mit Name und Skill (Erfahrung/Kompetenz).
- * <p>
- * Anstelle eines Fahrers -> das Land ist der Teilnehmer.
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class Land {
     private String name;
-    private int skill; // 1-10, je höher, desto besser/faster
 
     /**
      * Konstruktor
@@ -19,7 +16,6 @@ public class Land {
      */
     public Land(String name, int skill) {
         this.name = name;
-        this.skill = skill;
     }
 
     /**
@@ -29,10 +25,4 @@ public class Land {
         return name;
     }
 
-    /**
-     * @return Skill (1-10)
-     */
-    public int getSkill() {
-        return skill;
-    }
 }

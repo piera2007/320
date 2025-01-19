@@ -4,7 +4,7 @@ package org.example;
  * Stellt statische Strecken bereit:
  * - Easy, Medium, Hard
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class StreckenListe {

@@ -3,7 +3,7 @@ package org.example;
 /**
  * Interface für ein Fahrzeug.
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public interface IFahrzeug {

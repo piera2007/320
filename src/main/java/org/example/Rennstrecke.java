@@ -4,7 +4,7 @@ package org.example;
  * Repräsentiert eine Rennstrecke mit Name, Länge (km)
  * und Schwierigkeitsgrad (1-10).
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class Rennstrecke {

@@ -4,7 +4,7 @@ package org.example;
  * Konkrete Klasse CrossMotorrad.
  * Besser für schweres Gelände/härtere Strecken.
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class CrossMotorrad extends Motorrad {

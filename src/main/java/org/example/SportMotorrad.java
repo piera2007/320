@@ -3,7 +3,7 @@ package org.example;
 /**
  * Konkrete Klasse SportMotorrad.
  *
- * @author
+ * @author Piera Blum
  * @version 1.0
  */
 public class SportMotorrad extends Motorrad {

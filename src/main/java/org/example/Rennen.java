@@ -7,6 +7,9 @@ import java.util.List;
 /**
  * Ein Rennen mit mind. 2 Fahrern.
  * Bei Zeitgleichheit => Unentschieden (Sieger = null).
+ *
+ *  * @author Piera Blum
+ *  * @version 1.0
  */
 public class Rennen {
     private Rennstrecke strecke;

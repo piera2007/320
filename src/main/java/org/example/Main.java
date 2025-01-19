@@ -4,26 +4,76 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Hauptklasse:
- * - Enthält ein Benutzer-Guthaben
- * - Erlaubt Wetten (werden abgezogen vom Guthaben),
- *   bei Sieg gewinnt man doppelt,
- *   bei Unentschieden verliert man.
- * - Sorgt dafür, dass bei exakter Zeitgleichheit
- *   (Unentschieden) kein Sieger bestimmt wird.
+ * Die Hauptklasse der Motorrad-Rennen-Simulation.
+ * <p>
+ * Dieses Programm ermöglicht es, neue Rennen anzulegen,
+ * Wetten zu platzieren und ein Rennen zu starten. Am Ende
+ * kann eine Statistik eingesehen und der Kontostand
+ * angezeigt werden. Das Menü wird in einer Endlosschleife
+ * ausgeführt, bis der Benutzer das Programm beendet.
+ * <p>
+ * Wichtige Aufgaben dieser Klasse:
+ * <ul>
+ *   <li>Steuerung des Hauptmenüs und Verarbeitung der Benutzereingaben</li>
+ *   <li>Verwaltung eines {@link Rennen}-Objekts als laufendes Rennen</li>
+ *   <li>Verwaltung eines {@link BetManager} mit Guthaben und Wetten</li>
+ *   <li>Einbindung des {@link StatistikManager}, um Rennen und Ergebnisse
+ *       zu speichern und später anzuzeigen</li>
+ * </ul>
  *
- * @author
+ * <strong>Menüpunkte:</strong>
+ * <ol>
+ *   <li><b>Neues Rennen anlegen</b>:
+ *       Streckenauswahl, Eingabe von Fahrern, Auswahl von Motorrädern.</li>
+ *   <li><b>Wette platzieren</b>:
+ *       Wette auf einen teilnehmenden Fahrer abschließen (Einsatz wird abgezogen).</li>
+ *   <li><b>Rennen starten</b>:
+ *       Anzahl Runden festlegen, Sieger ermitteln, Wetten auswerten.</li>
+ *   <li><b>Statistik</b>:
+ *       Zeigt die abgespeicherten Daten über vergangene Rennen.</li>
+ *   <li><b>Kontostand anzeigen</b>:
+ *       Zeigt das aktuelle Benutzer-Guthaben an.</li>
+ *   <li><b>Beenden</b>:
+ *       Programm läuft nicht länger weiter.</li>
+ * </ol>
+ * <p>
+ * Bei Zeitgleichheit aller Fahrer (exakte Zeiten) wird
+ * ein Unentschieden festgestellt und alle Wetten verlieren.
+ *
+ * @author Piera Blum
  * @version 1.0
  */
 public class Main {
 
+    /**
+     * Scanner, um Benutzereingaben vom Terminal einzulesen.
+     */
     private static Scanner sc = new Scanner(System.in);
 
+    /**
+     * Dient zur Verwaltung der Statistik über abgeschlossene Rennen.
+     */
     private static StatistikManager statistikManager = new StatistikManager();
+
+    /**
+     * Verwalter aller Wetten und des Benutzer-Guthabens.
+     */
     private static BetManager betManager = new BetManager(100.0);
 
+    /**
+     * Aktuell laufendes, aber noch nicht gestartetes Rennen.
+     */
     private static Rennen aktuellesRennen = null;
 
+    /**
+     * Einstiegspunkt des Programms (main-Methode).
+     * <p>
+     * Startet eine Endlosschleife mit einem Konsolen-Menü,
+     * bis der Benutzer das Programm über eine Auswahl
+     * (Menüpunkt 6) beendet.
+     *
+     * @param args Kommandozeilen-Argumente (nicht genutzt)
+     */
     public static void main(String[] args) {
         boolean running = true;
         while (running) {
@@ -32,10 +82,9 @@ public class Main {
             System.out.println("1) Neues Rennen anlegen");
             System.out.println("2) Wette platzieren");
             System.out.println("3) Rennen starten");
-            System.out.println("4) Standard-Statistik");
-            System.out.println("5) Detaillierte Rennergebnisse");
-            System.out.println("6) Kontostand anzeigen");
-            System.out.println("7) Beenden");
+            System.out.println("4) Statistik");
+            System.out.println("5) Kontostand anzeigen");
+            System.out.println("6) Beenden");
             System.out.print("Ihre Auswahl: ");
 
             int auswahl = leseInt();
@@ -53,12 +102,9 @@ public class Main {
                     statistikManager.zeigeStatistik();
                     break;
                 case 5:
-                    statistikManager.zeigeDetaillierteErgebnisse();
-                    break;
-                case 6:
                     kontostandAnzeigen();
                     break;
-                case 7:
+                case 6:
                     running = false;
                     System.out.println("Programm beendet.");
                     break;
@@ -69,19 +115,20 @@ public class Main {
         sc.close();
     }
 
-
     /**
-     * Legt ein neues Rennen an.
+     * Legt ein neues Rennen an, sofern kein ungestartetes Rennen
+     * existiert. Der Benutzer wählt eine Strecke aus und legt
+     * eine Mindestzahl von Fahrern fest. Für jeden Fahrer werden
+     * Name, Land, Erfahrung abgefragt, und ein Motorrad wird
+     * ausgewählt.
+     * <p>
+     * Das angelegte Rennen wird in {@code aktuellesRennen} gespeichert.
      */
     private static void rennenAnlegen() {
         if (aktuellesRennen != null && !aktuellesRennen.isStarted()) {
             System.out.println("Es gibt bereits ein ungestartetes Rennen!");
             return;
         }
-        // Neue Wetten -> BetManager leeren oder beibehalten?
-        // Hier: leeren wir nicht automatisch,
-        // da der Benutzer sein Guthaben behalten soll.
-        // Falls du möchtest, kannst du bets.clear() hier aufrufen.
 
         System.out.println("\n--- Neues Rennen anlegen ---");
         Rennstrecke strecke = waehleStrecke();
@@ -100,7 +147,7 @@ public class Main {
         for (int i = 1; i <= anzahl; i++) {
             System.out.println("\nFahrer " + i + ":");
             Fahrer f = erstelleFahrer();
-            // je nach Strecke nur bestimmte Motos
+            // Je nach Schwierigkeitsgrad können andere Motorräder verfügbar sein
             Motorrad[] moegliche = MotorradListe.getVerfuegbareFuerStrecke(strecke.getSchwierigkeitsgrad());
             Motorrad m = waehleMotorrad(moegliche);
             rennen.addTeilnehmer(f, m);
@@ -110,7 +157,11 @@ public class Main {
     }
 
     /**
-     * Wette platzieren, nur auf Fahrer des ungestarteten Rennens.
+     * Ermöglicht das Platzieren einer Wette auf einen der Fahrer,
+     * der noch nicht gestarteten Rennens.
+     * <p>
+     * Falls es kein Rennen oder bereits gestartetes Rennen gibt,
+     * wird die Aktion abgebrochen.
      */
     private static void wettenPlatzieren() {
         if (aktuellesRennen == null || aktuellesRennen.isStarted()) {
@@ -153,12 +204,15 @@ public class Main {
     }
 
     /**
-     * Rennen starten:
-     * - mind. 2 Fahrer
-     * - Runden
-     * - Sieger oder unentschieden
-     * - Wetten auswerten
-     * - Statistik updaten
+     * Startet das aktuell angelegte Rennen, falls es existiert
+     * und noch nicht gestartet wurde. Der Benutzer gibt die
+     * Rundenanzahl an. Danach werden die Ergebnisse berechnet:
+     * <ul>
+     *   <li>Sieger ermittelt (oder Unentschieden)</li>
+     *   <li>Wetten im {@link BetManager} ausgewertet</li>
+     *   <li>Rennen in den {@link StatistikManager} übernommen</li>
+     *   <li>{@code aktuellesRennen} auf {@code null} gesetzt</li>
+     * </ul>
      */
     private static void rennenStarten() {
         if (aktuellesRennen == null) {
@@ -195,7 +249,10 @@ public class Main {
     }
 
     /**
-     * Erstellt einen Fahrer anhand von Benutzereingaben
+     * Erstellt einen neuen Fahrer durch Benutzereingaben
+     * für Name, Land und Erfahrungsjahre.
+     *
+     * @return Ein {@link Fahrer}-Objekt mit den eingegebenen Daten
      */
     private static Fahrer erstelleFahrer() {
         System.out.print("Fahrer-Name: ");
@@ -222,7 +279,13 @@ public class Main {
     }
 
     /**
-     * Lässt den User ein Motorrad aus der übergebenen Auswahl wählen.
+     * Lässt den Benutzer ein Motorrad aus dem übergebenen Array
+     * auswählen. Falls ein ungültiger Index eingegeben wird,
+     * wird das erste Motorrad gewählt.
+     *
+     * @param arr ein Array zulässiger Motorrad-Objekte,
+     *            z. B. basierend auf der Streckenschwierigkeit
+     * @return das ausgewählte {@link Motorrad}-Objekt
      */
     private static Motorrad waehleMotorrad(Motorrad[] arr) {
         System.out.println("Verfügbare Motorräder (basierend auf Strecken-Schwierigkeit):");
@@ -243,7 +306,11 @@ public class Main {
     }
 
     /**
-     * Wählt eine Rennstrecke aus StreckenListe
+     * Lässt den Benutzer eine Rennstrecke aus {@link StreckenListe}
+     * auswählen. Bei falscher Eingabe wird automatisch die erste
+     * Strecke gewählt.
+     *
+     * @return die vom Benutzer gewählte {@link Rennstrecke}
      */
     private static Rennstrecke waehleStrecke() {
         Rennstrecke[] arr = StreckenListe.getAlleStrecken();
@@ -263,6 +330,12 @@ public class Main {
         return arr[ind];
     }
 
+    /**
+     * Liest eine ganze Zahl (int) von der Konsole,
+     * mit Fehlerbehandlung bei ungültigen Eingaben.
+     *
+     * @return der eingelesene int-Wert
+     */
     private static int leseInt() {
         while(true) {
             String inp = sc.nextLine();
@@ -274,6 +347,12 @@ public class Main {
         }
     }
 
+    /**
+     * Liest einen double-Wert (Kommazahl) von der Konsole,
+     * mit Fehlerbehandlung bei ungültigen Eingaben.
+     *
+     * @return der eingelesene double-Wert
+     */
     private static double leseDouble() {
         while(true) {
             String inp = sc.nextLine();
@@ -284,8 +363,10 @@ public class Main {
             }
         }
     }
+
     /**
-     * Zeigt den aktuellen Kontostand an.
+     * Zeigt den aktuellen Kontostand an, indem
+     * {@link BetManager#getUserBalance()} aufgerufen wird.
      */
     private static void kontostandAnzeigen() {
         double bal = betManager.getUserBalance();
