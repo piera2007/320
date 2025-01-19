@@ -14,8 +14,13 @@ public class Rennen {
 
     private List<Fahrer> fahrerListe;
     private HashMap<Fahrer, Motorrad> fahrerZuMoto;
-    private HashMap<Fahrer, Double> ergebnisse;
+    private HashMap<Fahrer, Double> ergebnisse; // final times
 
+    /**
+     * Konstruktor
+     *
+     * @param strecke Die Rennstrecke
+     */
     public Rennen(Rennstrecke strecke) {
         this.strecke = strecke;
         this.started = false;
@@ -24,6 +29,9 @@ public class Rennen {
         this.ergebnisse = new HashMap<>();
     }
 
+    /**
+     * Fügt einen Teilnehmer (Fahrer + Motorrad) hinzu.
+     */
     public void addTeilnehmer(Fahrer fahrer, Motorrad moto) {
         if (started) {
             throw new IllegalStateException("Rennen ist schon gestartet!");
@@ -32,6 +40,11 @@ public class Rennen {
         fahrerZuMoto.put(fahrer, moto);
     }
 
+    /**
+     * Startet das Rennen.
+     *
+     * @param runden Anzahl Runden (mind 1)
+     */
     public void starteRennen(int runden) {
         if (fahrerListe.size() < 2) {
             throw new IllegalArgumentException("Mindestens 2 Teilnehmer notwendig!");
@@ -43,15 +56,16 @@ public class Rennen {
 
         for (Fahrer f : fahrerListe) {
             Motorrad m = fahrerZuMoto.get(f);
-            double tOne = berechneRundenzeit(f, m);
-            ergebnisse.put(f, tOne * runden);
+            double timeOne = berechneRundenzeit(f, m);
+            ergebnisse.put(f, timeOne * runden);
         }
     }
 
     /**
-     * Beispiel-Formel:
-     * effectiveSpeed = m.getGeschwindigkeit() + (fahrer.erfahrung * 3)
-     * zeit = (streckeLaenge / effectiveSpeed) * (1 + (streckeSchw*0.05)) * 3600
+     * Formel: effectiveSpeed = bikeSpeed + (erfahrung * 3)
+     * Zeit = (streckenlänge / effectiveSpeed)
+     *       * (1 + schwgrad * 0.05)
+     *       * 3600
      */
     private double berechneRundenzeit(Fahrer f, Motorrad m) {
         double effSpeed = m.getGeschwindigkeit() + (f.getErfahrung() * 3);
@@ -61,13 +75,12 @@ public class Rennen {
     }
 
     /**
-     * Liefert den eindeutigen Sieger oder null bei Unentschieden.
+     * Eindeutiger Sieger oder null bei Unentschieden
      */
     public Fahrer getSieger() {
         if (ergebnisse.isEmpty()) {
             return null;
         }
-        // Beste Zeit herausfinden
         double bestTime = Double.MAX_VALUE;
         for (Fahrer f : ergebnisse.keySet()) {
             double t = ergebnisse.get(f);
@@ -75,18 +88,15 @@ public class Rennen {
                 bestTime = t;
             }
         }
-        // Nun schauen, wie viele Fahrer diese bestTime haben
+        // wer hat bestTime?
         List<Fahrer> winners = new ArrayList<>();
         for (Fahrer f : ergebnisse.keySet()) {
             if (Math.abs(ergebnisse.get(f) - bestTime) < 0.000001) {
-                // Annahme: "exakt" gleich => floating-Epsilon
                 winners.add(f);
             }
         }
-        if (winners.size() == 1) {
-            return winners.get(0); // eindeutiger Sieger
-        }
-        return null; // Unentschieden
+        if (winners.size() == 1) return winners.get(0);
+        return null; // unentschieden
     }
 
     public boolean isStarted() {
@@ -99,5 +109,19 @@ public class Rennen {
 
     public Motorrad getMotorrad(Fahrer f) {
         return fahrerZuMoto.get(f);
+    }
+
+    /**
+     * @return HashMap<Fahrer, Double> mit finalen Zeiten
+     */
+    public HashMap<Fahrer, Double> getErgebnisse() {
+        return ergebnisse;
+    }
+
+    /**
+     * @return Die verwendete Rennstrecke
+     */
+    public Rennstrecke getStrecke() {
+        return strecke;
     }
 }

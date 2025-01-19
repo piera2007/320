@@ -16,10 +16,10 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class Main {
+
     private static Scanner sc = new Scanner(System.in);
 
     private static StatistikManager statistikManager = new StatistikManager();
-    // Starte mit 100.0 Guthaben
     private static BetManager betManager = new BetManager(100.0);
 
     private static Rennen aktuellesRennen = null;
@@ -27,13 +27,15 @@ public class Main {
     public static void main(String[] args) {
         boolean running = true;
         while (running) {
-            System.out.println("\n=== HAUPTMENÜ === (Guthaben: " + betManager.getUserBalance() + ")");
+            System.out.println("\n=== HAUPTMENÜ === (Guthaben: "
+                    + betManager.getUserBalance() + ")");
             System.out.println("1) Neues Rennen anlegen");
             System.out.println("2) Wette platzieren");
             System.out.println("3) Rennen starten");
-            System.out.println("4) Statistik anzeigen");
-            System.out.println("5) Kontostand anzeigen");
-            System.out.println("6) Beenden");
+            System.out.println("4) Standard-Statistik");
+            System.out.println("5) Detaillierte Rennergebnisse");
+            System.out.println("6) Kontostand anzeigen");
+            System.out.println("7) Beenden");
             System.out.print("Ihre Auswahl: ");
 
             int auswahl = leseInt();
@@ -51,11 +53,12 @@ public class Main {
                     statistikManager.zeigeStatistik();
                     break;
                 case 5:
-                    System.out.println("\n=== Aktuelle Konto- und Wettübersicht ===");
-                    System.out.println("Kontostand: " + betManager.getUserBalance());
-                    betManager.showAllBets();
+                    statistikManager.zeigeDetaillierteErgebnisse();
                     break;
                 case 6:
+                    kontostandAnzeigen();
+                    break;
+                case 7:
                     running = false;
                     System.out.println("Programm beendet.");
                     break;
@@ -285,6 +288,7 @@ public class Main {
      * Zeigt den aktuellen Kontostand an.
      */
     private static void kontostandAnzeigen() {
-        double balance = betManager.getUserBalance();
-        System.out.println("\nIhr aktuelles Guthaben beträgt: " + balance + " Geldeinheiten.");    }
+        double bal = betManager.getUserBalance();
+        System.out.println("\nIhr aktuelles Guthaben: " + bal);
+    }
 }

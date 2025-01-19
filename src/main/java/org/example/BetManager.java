@@ -1,26 +1,23 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 
 /**
  * Verwalter für Wetten (auf Fahrer).
  *
- * Nun mit Benutzer-Guthaben-Verwaltung:
- * - Wenn eine Wette gewonnen wird, erhält der Benutzer
- *   den doppelten Einsatz zurück.
- * - Bei Verlust oder Unentschieden geht der Einsatz verloren.
- *
- * @author
- * @version 1.0
+ * - userBalance = Geld des Benutzers
+ * - addBet() zieht Einsatz vom Guthaben ab
+ * - checkBets() gibt den Gesamtgewinn zurück,
+ *   aktualisiert userBalance
  */
 public class BetManager {
     private List<Bet> bets;
-    private double userBalance; // Guthaben des Benutzers
+    private double userBalance;
 
     /**
-     * Konstruktor: Start-Guthaben kann man festlegen.
+     * Konstruktor
      *
      * @param startBalance Anfangsguthaben
      */
@@ -30,23 +27,23 @@ public class BetManager {
     }
 
     /**
-     * Neue Wette hinzufügen (sofern userBalance >= Einsatz).
+     * Fügt eine Wette hinzu, wenn genug Guthaben vorhanden ist.
      *
      * @param bet Wette
-     * @return true, wenn Wette erfolgreich platziert, false wenn nicht genug Guthaben
+     * @return true bei Erfolg, false wenn zu wenig Guthaben
      */
     public boolean addBet(Bet bet) {
         if (bet.getEinsatz() > userBalance) {
-            return false; // nicht genug Geld
+            return false;
         }
-        // Einsatz direkt abziehen
         userBalance -= bet.getEinsatz();
         bets.add(bet);
         return true;
     }
 
     /**
-     * Zeigt alle Wetten, gruppiert nach Fahrername.
+     * Zeigt laufende Wetten gruppiert nach Fahrername,
+     * plus aktuelles Guthaben.
      */
     public void showAllBets() {
         if (bets.isEmpty()) {
@@ -54,59 +51,60 @@ public class BetManager {
             return;
         }
         HashMap<String, Double> sumEinsatz = new HashMap<>();
-        HashMap<String, Integer> countWetten = new HashMap<>();
+        HashMap<String, Integer> countBet = new HashMap<>();
 
         for (Bet b : bets) {
             String fn = b.getFahrerName();
             sumEinsatz.put(fn, sumEinsatz.getOrDefault(fn, 0.0) + b.getEinsatz());
-            countWetten.put(fn, countWetten.getOrDefault(fn, 0) + 1);
+            countBet.put(fn, countBet.getOrDefault(fn, 0) + 1);
         }
 
         System.out.println("\nAktuelle Wetten:");
         for (String name : sumEinsatz.keySet()) {
             double sum = sumEinsatz.get(name);
-            int c = countWetten.get(name);
+            int c = countBet.get(name);
             System.out.println("  " + c + "x auf " + name + " (Summe Einsätze=" + sum + ")");
         }
-        System.out.println("Aktuelles Guthaben: " + userBalance);
+        System.out.println("Guthaben: " + userBalance);
     }
 
     /**
-     * Prüft, ob es einen eindeutigen Sieger gibt.
-     * - Wenn unentschieden => alle verlieren
-     * - Wenn eindeutig => Gewinner bekommen 2xEinsatz zurück
+     * Prüft Wetten bei eindeutigem Sieger (siegerName),
+     * bei unentschieden => 0.0
      *
-     * @param siegerName Name des Siegers oder null/Leerstring bei unentschieden
+     * @param siegerName Name des Siegers, "" oder null bei Unentschieden
+     * @return Gesamtgewinn (diese Summe kommt zum Guthaben dazu)
      */
-    public void checkBets(String siegerName) {
+    public double checkBets(String siegerName) {
         if (bets.isEmpty()) {
             System.out.println("Keine Wetten vorhanden.");
-            return;
+            return 0.0;
         }
-        // unentschieden => siegerName == null oder ""
         if (siegerName == null || siegerName.isEmpty()) {
-            System.out.println("Unentschieden! Keine Wetten gewinnen.");
+            // unentschieden
+            System.out.println("Unentschieden! Keine Gewinne.");
             bets.clear();
-            return;
+            return 0.0;
         }
 
         double totalWin = 0.0;
         boolean anyWin = false;
-
         for (Bet b : bets) {
             if (b.getFahrerName().equalsIgnoreCase(siegerName)) {
                 anyWin = true;
                 double plus = b.getEinsatz() * 2;
-                userBalance += plus;
                 totalWin += plus;
             }
         }
+
         if (anyWin) {
-            System.out.println("Einige Wetten haben gewonnen! Gesamt-Auszahlung: " + totalWin);
+            userBalance += totalWin;
+            System.out.println("Einige Wetten haben gewonnen! Ausbezahlter Gewinn: " + totalWin);
         } else {
             System.out.println("Keine Wette hat gewonnen.");
         }
         bets.clear();
+        return anyWin ? totalWin : 0.0;
     }
 
     /**
