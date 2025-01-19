@@ -5,114 +5,99 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Verwaltet das Anlegen der Teilnehmer (Land + Motorrad)
- * und ermittelt nach dem Start den Sieger.
- *
- * Achtung: Wir legen das Rennen an, fügen Teilnehmer hinzu,
- * aber starten es erst später -> so kann man vorher Wetten platzieren.
+ * Ein Rennen mit mind. 2 Fahrern.
+ * Bei Zeitgleichheit => Unentschieden (Sieger = null).
  */
 public class Rennen {
     private Rennstrecke strecke;
-    private boolean started; // wurde das Rennen bereits gestartet?
+    private boolean started;
 
-    // Hier speichern wir Paare (Land -> Motorrad)
-    private List<Land> laender;
-    private HashMap<Land, Motorrad> fahrzeuge;
-    private HashMap<Land, Double> ergebnisse;
+    private List<Fahrer> fahrerListe;
+    private HashMap<Fahrer, Motorrad> fahrerZuMoto;
+    private HashMap<Fahrer, Double> ergebnisse;
 
     public Rennen(Rennstrecke strecke) {
         this.strecke = strecke;
-        this.laender = new ArrayList<>();
-        this.fahrzeuge = new HashMap<>();
-        this.ergebnisse = new HashMap<>();
         this.started = false;
+        this.fahrerListe = new ArrayList<>();
+        this.fahrerZuMoto = new HashMap<>();
+        this.ergebnisse = new HashMap<>();
     }
 
-    /**
-     * Fügt einen Teilnehmer (Land + Motorrad) hinzu,
-     * solange das Rennen noch nicht gestartet ist.
-     */
-    public void addTeilnehmer(Land land, Motorrad m) {
+    public void addTeilnehmer(Fahrer fahrer, Motorrad moto) {
         if (started) {
-            throw new IllegalStateException("Rennen wurde bereits gestartet, kein Hinzufügen mehr möglich!");
+            throw new IllegalStateException("Rennen ist schon gestartet!");
         }
-        laender.add(land);
-        fahrzeuge.put(land, m);
+        fahrerListe.add(fahrer);
+        fahrerZuMoto.put(fahrer, moto);
     }
 
-    /**
-     * Startet das Rennen mit (runden) und berechnet
-     * die Zeiten.
-     *
-     * Nach dem Start kann man keine neuen Teilnehmer hinzufügen.
-     */
     public void starteRennen(int runden) {
-        if (laender.size() < 2) {
-            throw new IllegalArgumentException("Mindestens 2 Teilnehmer erforderlich!");
+        if (fahrerListe.size() < 2) {
+            throw new IllegalArgumentException("Mindestens 2 Teilnehmer notwendig!");
         }
         if (started) {
-            throw new IllegalStateException("Rennen ist bereits gestartet!");
+            throw new IllegalStateException("Rennen bereits gestartet!");
         }
-        this.started = true;
+        started = true;
 
-        for (Land land : laender) {
-            Motorrad m = fahrzeuge.get(land);
-            double singleLapTime = berechneRundenzeit(land, m);
-            double totalTime = singleLapTime * runden;
-            ergebnisse.put(land, totalTime);
+        for (Fahrer f : fahrerListe) {
+            Motorrad m = fahrerZuMoto.get(f);
+            double tOne = berechneRundenzeit(f, m);
+            ergebnisse.put(f, tOne * runden);
         }
     }
 
     /**
-     * Formel:
-     *  effectiveSpeed = (Motorrad.getGeschwindigkeit() + (Skill * 5))
-     *  zeit pro runde = (strecke.getLaenge() / effectiveSpeed)
-     *                  * (1 + (strecke.getSchwierigkeitsgrad() * 0.05))
-     *                  * 3600
+     * Beispiel-Formel:
+     * effectiveSpeed = m.getGeschwindigkeit() + (fahrer.erfahrung * 3)
+     * zeit = (streckeLaenge / effectiveSpeed) * (1 + (streckeSchw*0.05)) * 3600
      */
-    private double berechneRundenzeit(Land land, Motorrad moto) {
-        double effectiveSpeed = moto.getGeschwindigkeit() + (land.getSkill() * 5);
-        double basis = strecke.getLaenge() / effectiveSpeed;
+    private double berechneRundenzeit(Fahrer f, Motorrad m) {
+        double effSpeed = m.getGeschwindigkeit() + (f.getErfahrung() * 3);
+        double basis = strecke.getLaenge() / effSpeed;
         double schwFactor = 1 + (strecke.getSchwierigkeitsgrad() * 0.05);
         return basis * schwFactor * 3600;
     }
 
     /**
-     * Gibt den Sieger (Land) zurück (kleinste Zeit).
-     * Null, wenn keine Teilnehmer.
+     * Liefert den eindeutigen Sieger oder null bei Unentschieden.
      */
-    public Land getSieger() {
-        Land bester = null;
-        double besteZeit = Double.MAX_VALUE;
-        for (Land land : ergebnisse.keySet()) {
-            double zeit = ergebnisse.get(land);
-            if (zeit < besteZeit) {
-                besteZeit = zeit;
-                bester = land;
+    public Fahrer getSieger() {
+        if (ergebnisse.isEmpty()) {
+            return null;
+        }
+        // Beste Zeit herausfinden
+        double bestTime = Double.MAX_VALUE;
+        for (Fahrer f : ergebnisse.keySet()) {
+            double t = ergebnisse.get(f);
+            if (t < bestTime) {
+                bestTime = t;
             }
         }
-        return bester;
+        // Nun schauen, wie viele Fahrer diese bestTime haben
+        List<Fahrer> winners = new ArrayList<>();
+        for (Fahrer f : ergebnisse.keySet()) {
+            if (Math.abs(ergebnisse.get(f) - bestTime) < 0.000001) {
+                // Annahme: "exakt" gleich => floating-Epsilon
+                winners.add(f);
+            }
+        }
+        if (winners.size() == 1) {
+            return winners.get(0); // eindeutiger Sieger
+        }
+        return null; // Unentschieden
     }
 
-    /**
-     * Liefert das verwendete Motorrad für ein Land.
-     */
-    public Motorrad getMotorrad(Land land) {
-        return fahrzeuge.get(land);
-    }
-
-    /**
-     * Gibt alle Teilnehmer (Land-Objekte) zurück.
-     * Kann z. B. für das Wetten verwendet werden.
-     */
-    public List<Land> getTeilnehmer() {
-        return laender;
-    }
-
-    /**
-     * Prüft, ob das Rennen bereits gestartet wurde.
-     */
     public boolean isStarted() {
         return started;
+    }
+
+    public List<Fahrer> getFahrerListe() {
+        return fahrerListe;
+    }
+
+    public Motorrad getMotorrad(Fahrer f) {
+        return fahrerZuMoto.get(f);
     }
 }
