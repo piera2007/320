@@ -4,7 +4,7 @@ Dieses Projekt ist eine **Konsolenanwendung** in Java, die ein einfaches **Motor
 Jeder Teilnehmer ist ein *Fahrer* mit Namen, Land und Erfahrung, sowie einem *Motorrad* mit unterschiedlichen Geschwindigkeiten.  
 Mehrere Fahrer können an einem Rennen teilnehmen, eine **Strecke** wird gewählt, und am Ende wird ein **Sieger** bestimmt.
 
-Ausserdem kann man **Wetten** auf den Ausgang eines Rennens platzieren – mit Guthaben-Verwaltung.
+Außerdem kann man **Wetten** auf den Ausgang eines Rennens platzieren – mit Guthaben-Verwaltung.
 
 ## Features
 
@@ -46,15 +46,26 @@ Ausserdem kann man **Wetten** auf den Ausgang eines Rennens platzieren – mit G
     - 6) **Beenden**
 
 2. **Erweiterungen**
-    - Du kannst beliebig viele Rennen hintereinander anlegen.
-    - Mehrere Fahrer aus demselben Land sind möglich, wenn sie verschiedene Fahrernamen haben.
+    - Beliebig viele Rennen hintereinander anlegen.
+    - Mehrere Fahrer aus demselben Land sind möglich, wenn sie unterschiedliche Namen haben.
     - Rundenanzahl kann variieren.
 
-## Installation und Ausführung
+## Mögliche zukünftige Erweiterungen
 
-1. **Java-Version**: Achte darauf, dass du Java 8 oder höher installiert hast.
-2. **Kompilieren**: `javac -d bin src/org/example/*.java` (oder in einer IDE wie IntelliJ/Maven/Gradle-Projekt).
-3. **Starten**: `java org.example.Main` (bei entsprechender Package-Struktur).
+- **Wetter- und Streckenbedingungen**: Etwa Regen oder Schnee, die den Fahrern/Motorrädern unterschiedliche Einschränkungen geben.
+- **Fahrertraining**: Fahrer können über mehrere Rennen Erfahrung sammeln und dadurch ihre Werte steigern.
+- **Vertrags- oder Sponsorlogik**: Fahrer haben Sponsorverträge, wodurch das Start- oder Preisgeld variiert.
+- **Turnier-Modus**: Statt einzelner Rennen könnte man eine ganze Turnier-/Saisonwertung aufbauen.
+- **Mehrere Benutzer**: Jeder Benutzer könnte ein eigenes Guthabenkonto haben und gegen andere Benutzer wetten.
+- **Grafische Oberfläche**: Eine GUI, die die Menüs, Fahrer und Strecken grafisch präsentiert.
+- **Persistenz**: Speicherung der Fahrer, Motorräder, Ergebnisse und Wetten in einer Datenbank oder in JSON/XML-Dateien.
+
+## Nutzen/Wertschöpfung für zukünftige Nutzer
+
+- **Trainings- und Planungshilfe**: Fahrer können unterschiedliche Konfigurationen (Erfahrung, Motorrad, Strecken) testen und anhand der Statistik sehen, welche Kombinationen am erfolgreichsten sind.
+- **Simulations-Tool**: In einem realen oder spielerischen Kontext lässt sich die Auswirkung von Fahrerwerten oder Streckenschwierigkeiten untersuchen, um Strategien oder Setups zu planen.
+- **Wett-Unterhaltung**: Durch die Guthabenverwaltung und Wettenmechanik wird ein spielerischer Mehrwert geschaffen, der das einfache Renn-Simulationserlebnis erweitert.
+- **Grundlage für weitere Projekte**: Da verschiedene OOP-Konzepte (Vererbung, Interface, etc.) demonstriert werden, kann der Code als Lern- oder Startpunkt dienen, um z. B. komplexere Renn- oder Wett-Systeme aufzubauen.
 
 ## Anmerkungen
 
@@ -66,7 +77,7 @@ Ausserdem kann man **Wetten** auf den Ausgang eines Rennens platzieren – mit G
     - Polymorphismus (verschiedene Motorradtypen)
     - Exception-Handling (falsche Eingaben)
     - Aggregation/Assoziation (StatistikManager sammelt mehrere Rennen).
-- **Wertungen** und **Formeln** sind nur beispielhaft. Man kann das Spiel beliebig erweitern (z. B. Wetter, Rundenzeiten, Quoten …).
+- **Wertungen** und **Formeln** sind nur beispielhaft. Man kann das Spiel beliebig erweitern (siehe oben).
+- Das Programm läuft auf **Konsolenebene** und verwendet **Text-Eingaben**. Eine GUI kann in Zukunft ergänzt werden.
 
-Viel Spass!
-
+**Viel Spass!**
