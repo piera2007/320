@@ -4,7 +4,7 @@ Dieses Projekt ist eine **Konsolenanwendung** in Java, die ein einfaches **Motor
 Jeder Teilnehmer ist ein *Fahrer* mit Namen, Land und Erfahrung, sowie einem *Motorrad* mit unterschiedlichen Geschwindigkeiten.  
 Mehrere Fahrer können an einem Rennen teilnehmen, eine **Strecke** wird gewählt, und am Ende wird ein **Sieger** bestimmt.
 
-Außerdem kann man **Wetten** auf den Ausgang eines Rennens platzieren – mit Guthaben-Verwaltung.
+Ausserdem kann man **Wetten** auf den Ausgang eines Rennens platzieren – mit Guthaben-Verwaltung.
 
 ## Features
 
