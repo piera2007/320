@@ -85,7 +85,6 @@ public class BetManager {
             System.out.println("Keine Wetten vorhanden.");
             return 0.0;
         }
-        // Unentschieden
         if (siegerName == null || siegerName.isEmpty()) {
             System.out.println("Unentschieden! Keine Gewinne.");
             bets.clear();

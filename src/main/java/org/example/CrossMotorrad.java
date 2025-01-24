@@ -2,7 +2,7 @@ package org.example;
 
 /**
  * Cross-Motorrad für schwierige Geländestrecken.
- *
+ * <p>
  * Erbt von {@link Motorrad} und setzt dessen Konstruktor um.
  *
  * @author Piera Blum

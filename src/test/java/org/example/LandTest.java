@@ -8,7 +8,8 @@ class LandTest {
 
     @Test
     void testConstructorAndGetName() {
-        Land land = new Land("Schweiz", 9);
+        Land land = new Land("Schweiz");
+
         assertEquals("Schweiz", land.getName());
     }
 }

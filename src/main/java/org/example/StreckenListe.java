@@ -5,7 +5,7 @@ package org.example;
  * - Easy, Medium, Hard
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 24.01.2025
  */
 public class StreckenListe {
     public static final Rennstrecke EASY = new Rennstrecke("Easy Track", 2.0, 2);

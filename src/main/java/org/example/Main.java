@@ -26,7 +26,7 @@ import java.util.Scanner;
  */
 public class Main {
 
-    private static Scanner sc = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
     private static StatistikManager statistikManager = new StatistikManager();
     private static BetManager betManager = new BetManager(100.0);
     private static Rennen aktuellesRennen = null;
@@ -74,7 +74,7 @@ public class Main {
                     System.out.println("Ungültige Auswahl!");
             }
         }
-        sc.close();
+        scanner.close();
     }
 
     /**
@@ -210,26 +210,27 @@ public class Main {
      */
     private static Fahrer erstelleFahrer() {
         System.out.print("Fahrer-Name: ");
-        String name = sc.nextLine();
+        String name = scanner.nextLine();
 
         System.out.print("Land (z. B. Schweiz): ");
-        String land = sc.nextLine();
+        String land = scanner.nextLine();
 
         int erf;
-        while(true) {
+        while (true) {
             System.out.print("Jahre Erfahrung (0..90): ");
             erf = leseInt();
             if (erf < 0) {
-                System.out.println("Nicht negativ!");
+                System.out.println("Fehler: Nicht negativ! Bitte erneut eingeben.\n");
             } else if (erf > 90) {
-                System.out.println("Max 90. Nehme 90.");
-                break;
+                System.out.println("Fehler: Max 90. Bitte erneut eingeben.\n");
             } else {
                 break;
             }
         }
+
         return new Fahrer(name, land, erf);
     }
+
 
     /**
      * Lässt den Benutzer aus einem {@code Motorrad}-Array wählen.
@@ -249,15 +250,13 @@ public class Main {
             }
 
             System.out.print("Ihre Wahl (1-" + arr.length + "): ");
-            int wahl = leseInt(); // z. B. Eingabe "1" => 1
+            int wahl = leseInt();
 
-            // Index wäre wahl - 1
             int index = wahl - 1;
 
             if (index < 0 || index >= arr.length) {
                 System.out.println("Ungültige Wahl! Bitte erneut versuchen.\n");
             } else {
-                // Gültiger Index => passendes Motorrad zurückgeben
                 return arr[index];
             }
         }
@@ -300,7 +299,7 @@ public class Main {
      */
     private static int leseInt() {
         while(true) {
-            String inp = sc.nextLine();
+            String inp = scanner.nextLine();
             try {
                 return Integer.parseInt(inp);
             } catch(NumberFormatException e) {
@@ -317,7 +316,7 @@ public class Main {
      */
     private static double leseDouble() {
         while(true) {
-            String inp = sc.nextLine();
+            String inp = scanner.nextLine();
             try {
                 return Double.parseDouble(inp);
             } catch(NumberFormatException e) {

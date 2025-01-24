@@ -7,14 +7,11 @@ import java.util.HashMap;
  * So kann der StatistikManager später Details ausgeben.
  * <p>
  *  * @author Piera Blum
- *  * @version 1.0
+ *  * @version 24.01.2025
  */
 public class Renndaten {
 
     private Rennen rennen;
-    // Original-Objekt, oder wir kopieren nur die Werte
-    // Hier zeige ich, wie wir es direkt speichern können
-
     private HashMap<Fahrer, Double> zeiten;
     private Fahrer sieger;
 
@@ -25,7 +22,6 @@ public class Renndaten {
      */
     public Renndaten(Rennen rennen) {
         this.rennen = rennen;
-        // Kopie der Zeiten
         this.zeiten = new HashMap<>(rennen.getErgebnisse());
         this.sieger = rennen.getSieger();
     }

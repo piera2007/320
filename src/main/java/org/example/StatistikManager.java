@@ -19,7 +19,7 @@ import java.util.Comparator;
  *   <li>{@link #zeigeStatistik()} aufrufen</li>
  * </ul>
  *
- * @author
+ * @author Piera Blum
  * @version 24.01.2025
  */
 public class StatistikManager {
@@ -59,14 +59,13 @@ public class StatistikManager {
             return;
         }
 
-        // 1) Standard-Statistik
         HashMap<String, Integer> siegeProFahrer = new HashMap<>();
         HashMap<String, Integer> siegeProMoto = new HashMap<>();
         HashMap<String, Integer> siegeProLand = new HashMap<>();
 
         for (Renndaten rd : renndatenListe) {
             Fahrer sieger = rd.getSieger();
-            if (sieger == null) continue; // unentschieden
+            if (sieger == null) continue;
 
             String fahrerName = sieger.getFahrerName();
             siegeProFahrer.put(fahrerName,
@@ -100,7 +99,6 @@ public class StatistikManager {
                 System.out.println("  " + l + ": " + c)
         );
 
-        // 2) Detaillierte Ergebnisse
         System.out.println("\n=== Detaillierte Rennergebnisse ===");
 
         for (int i = 0; i < renndatenListe.size(); i++) {
@@ -127,10 +125,10 @@ public class StatistikManager {
                 String diffStr = (Math.abs(diff) < 0.000001)
                         ? " (Sieger)"
                         : String.format(" (+%.2f)", diff);
-                System.out.println(String.format(
-                        "%s (%s), Zeit= %.2f%s",
+                System.out.printf(
+                        "%s (%s), Zeit= %.2f%s%n",
                         f.getFahrerName(), f.getLand(), t, diffStr
-                ));
+                );
             }
 
             if (rd.getSieger() == null) {

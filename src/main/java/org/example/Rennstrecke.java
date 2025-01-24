@@ -5,7 +5,7 @@ package org.example;
  * und Schwierigkeitsgrad (1-10).
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 24.01.2025
  */
 public class Rennstrecke {
     private String name;

@@ -9,15 +9,14 @@ import java.util.List;
  * Bei Zeitgleichheit → Unentschieden (Sieger = null).
  * <p>
  *  * @author Piera Blum
- *  * @version 1.0
+ *  * @version 24.01.2025
  */
 public class Rennen {
     private Rennstrecke strecke;
     private boolean started;
-
     private List<Fahrer> fahrerListe;
     private HashMap<Fahrer, Motorrad> fahrerZuMoto;
-    private HashMap<Fahrer, Double> ergebnisse; // final times
+    private HashMap<Fahrer, Double> ergebnisse;
 
     /**
      * Konstruktor
@@ -91,7 +90,6 @@ public class Rennen {
                 bestTime = t;
             }
         }
-        // wer hat bestTime?
         List<Fahrer> winners = new ArrayList<>();
         for (Fahrer f : ergebnisse.keySet()) {
             if (Math.abs(ergebnisse.get(f) - bestTime) < 0.000001) {
@@ -99,7 +97,7 @@ public class Rennen {
             }
         }
         if (winners.size() == 1) return winners.get(0);
-        return null; // unentschieden
+        return null;
     }
 
     public boolean isStarted() {

@@ -10,7 +10,7 @@ package org.example;
  * Felder: Marke, Modell, Geschwindigkeit, Beschleunigung.
  * Diese bestimmen die Grundeigenschaften des Motorrads.
  *
- * @author
+ * @author Piera Blum
  * @version 24.01.2025
  */
 public abstract class Motorrad implements IFahrzeug {

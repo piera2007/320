@@ -2,7 +2,7 @@ package org.example;
 
 /**
  * Interface für ein Fahrzeug mit Basis-Methoden.
- *
+ * <p>
  * Wird von {@link Motorrad} implementiert und
  * in Subklassen (z. B. {@link SportMotorrad})
  * konkretisiert.

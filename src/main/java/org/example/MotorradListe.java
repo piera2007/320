@@ -5,10 +5,9 @@ package org.example;
  * Je nach Streckentyp kann eine Auswahl eingeschränkt werden.
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 24.01.2025
  */
 public class MotorradListe {
-    // Beispielhafte Instanzen
     public static final Motorrad SPORT = new SportMotorrad("Yamaha", "R1", 260, 12);
     public static final Motorrad CROSS = new CrossMotorrad("KTM", "Enduro", 180, 8);
     public static final Motorrad TOURING = new TouringMotorrad("Honda", "GoldWing", 200, 6);
@@ -25,13 +24,10 @@ public class MotorradListe {
      */
     public static Motorrad[] getVerfuegbareFuerStrecke(int schwierigkeitsgrad) {
         if (schwierigkeitsgrad <= 3) {
-            // Easy
             return new Motorrad[]{SPORT, TOURING};
         } else if (schwierigkeitsgrad <= 6) {
-            // Medium
             return new Motorrad[]{SPORT, CROSS, TOURING};
         } else {
-            // Hard
             return new Motorrad[]{CROSS, TOURING};
         }
     }

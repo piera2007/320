@@ -5,7 +5,7 @@ package org.example;
  * Ausgewogene Werte, ideal für längere Strecken.
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 24.01.2025
  */
 public class TouringMotorrad extends Motorrad {
 
