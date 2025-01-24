@@ -2,21 +2,23 @@ package org.example;
 
 /**
  * Repräsentiert eine Wette auf einen Fahrer.
- *
- * Speichert den Namen des Fahrers und den Einsatz.
+ * <p>
+ * Enthält den Fahrernamen und den Einsatzbetrag.
+ * Wird in {@link BetManager} verwaltet.
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 23.01.2025
  */
 public class Bet {
+
     private String fahrerName;
     private double einsatz;
 
     /**
-     * Konstruktor
+     * Erzeugt ein {@code Bet}-Objekt.
      *
-     * @param fahrerName Fahrername, auf den gewettet wird
-     * @param einsatz Geldbetrag (z. B. 10.0)
+     * @param fahrerName Name des Fahrers, auf den gewettet wird.
+     * @param einsatz    Geldbetrag (z. B. 10.0).
      */
     public Bet(String fahrerName, double einsatz) {
         this.fahrerName = fahrerName;
@@ -24,14 +26,14 @@ public class Bet {
     }
 
     /**
-     * @return fahrerName
+     * @return Name des Fahrers
      */
     public String getFahrerName() {
         return fahrerName;
     }
 
     /**
-     * @return einsatz
+     * @return Einsatz in Geldeinheiten
      */
     public double getEinsatz() {
         return einsatz;

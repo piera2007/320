@@ -3,9 +3,7 @@ package org.example;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Testet die Klasse {@link CrossMotorrad}.
- */
+
 class CrossMotorradTest {
 
     @Test

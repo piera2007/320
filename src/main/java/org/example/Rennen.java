@@ -6,8 +6,8 @@ import java.util.List;
 
 /**
  * Ein Rennen mit mind. 2 Fahrern.
- * Bei Zeitgleichheit => Unentschieden (Sieger = null).
- *
+ * Bei Zeitgleichheit → Unentschieden (Sieger = null).
+ * <p>
  *  * @author Piera Blum
  *  * @version 1.0
  */

@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Hilfsklasse, die die finalen Resultate eines Rennens speichert.
  * So kann der StatistikManager später Details ausgeben.
- *
+ * <p>
  *  * @author Piera Blum
  *  * @version 1.0
  */

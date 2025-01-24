@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Testet die Klasse {@link Bet}.
- */
 class BetTest {
 
     @Test

@@ -1,30 +1,25 @@
 package org.example;
 
 /**
- * Repräsentiert einen Fahrer, der an einem Rennen teilnimmt.
- * <p>
- * Enthält:
- * - Name des Fahrers
- * - Land (String) oder Länderkürzel
- * - Erfahrung in Jahren
+ * Repräsentiert einen Fahrer mit Name, Land und Erfahrung.
  *
- * So kann man mehrere Fahrer aus demselben Land haben,
- * aber unterschiedliche Namen und Erfahrung.
+ * Mehrere Fahrer können dasselbe Land haben,
+ * aber unterschiedliche Namen/Erfahrungen.
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 23.01.2025
  */
 public class Fahrer {
     private String fahrerName;
-    private String land;      // z. B. "Schweiz"
-    private int erfahrung;    // Jahre Erfahrung
+    private String land;
+    private int erfahrung;
 
     /**
-     * Konstruktor
+     * Erzeugt einen {@code Fahrer}.
      *
      * @param fahrerName Name des Fahrers
-     * @param land Das Land, z. B. "Schweiz"
-     * @param erfahrung Jahre Erfahrung als Biker
+     * @param land       Land (z. B. "Schweiz")
+     * @param erfahrung  Jahre Fahrerfahrung
      */
     public Fahrer(String fahrerName, String land, int erfahrung) {
         this.fahrerName = fahrerName;
@@ -33,21 +28,21 @@ public class Fahrer {
     }
 
     /**
-     * @return fahrerName
+     * @return Name des Fahrers
      */
     public String getFahrerName() {
         return fahrerName;
     }
 
     /**
-     * @return land
+     * @return Land (String)
      */
     public String getLand() {
         return land;
     }
 
     /**
-     * @return erfahrung
+     * @return Fahrerfahrung (Jahre)
      */
     public int getErfahrung() {
         return erfahrung;

@@ -6,54 +6,37 @@ import java.util.HashMap;
 import java.util.Comparator;
 
 /**
- * Der {@code StatistikManager} speichert alle beendeten Rennen in Form
- * von {@link Renndaten} und ermöglicht eine kombinierte Darstellung von:
+ * Speichert beendete Rennen als {@link Renndaten} und
+ * zeigt eine kombinierte Statistik:
  * <ol>
- *   <li>Standard-Statistik (Siege pro Fahrer, Motorradtyp, Land)</li>
- *   <li>Detaillierten Ergebnissen (Zeiten, Zeitdifferenzen zum Sieger)</li>
+ *   <li>Standard (Siege pro Fahrer, Motorrad, Land)</li>
+ *   <li>Detaillierte Ergebnisse (Zeiten und Zeitdifferenzen)</li>
  * </ol>
  * <p>
- * Diese Klasse demonstriert, wie man sowohl einfache Statistiken
- * (z. B. Anzahl Siege) als auch ausführlichere Renndetails in einem
- * Schritt ausgeben kann.
- * <p>
- * Typische Verwendung:
+ * Typische Nutzung:
  * <ul>
- *   <li>Erstelle einen {@code StatistikManager}.</li>
- *   <li>Füge mit {@link #addRennen(Rennen)} nach Beendigung eines Rennens
- *       ein {@code Rennen} hinzu.</li>
- *   <li>Rufe {@link #zeigeStatistik()} auf, um sowohl die
- *       Standard-Statistik als auch die detaillierten Rennergebnisse
- *       aller gespeicherten Rennen zu sehen.</li>
+ *   <li>Rennen mit {@link #addRennen(Rennen)} hinzufügen</li>
+ *   <li>{@link #zeigeStatistik()} aufrufen</li>
  * </ul>
  *
- * @author Piera Blum
- * @version 1.0
+ * @author
+ * @version 23.01.2025
  */
 public class StatistikManager {
 
-    /**
-     * Eine Liste, die für jedes beendete Rennen
-     * ein {@link Renndaten}-Objekt speichert.
-     */
     private List<Renndaten> renndatenListe;
 
     /**
-     * Erstellt einen neuen {@code StatistikManager} mit
-     * einer anfänglich leeren Liste von Renndaten.
+     * Erstellt einen leeren {@code StatistikManager}.
      */
     public StatistikManager() {
         renndatenListe = new ArrayList<>();
     }
 
     /**
-     * Fügt ein beendetes Rennen der Statistik hinzu, sofern
-     * das Rennen tatsächlich gestartet wurde.
-     * <p>
-     * Bei einem noch nicht gestarteten Rennen wird eine
-     * Meldung ausgegeben und das Rennen nicht gespeichert.
+     * Fügt ein beendetes Rennen hinzu, sofern es tatsächlich gestartet wurde.
      *
-     * @param rennen das beendete Rennen
+     * @param rennen das beendete {@link Rennen}
      */
     public void addRennen(Rennen rennen) {
         if (!rennen.isStarted()) {
@@ -65,18 +48,10 @@ public class StatistikManager {
     }
 
     /**
-     * Zeigt in einem Durchgang sowohl die Standard-Statistik
-     * als auch detaillierte Ergebnisse aller Rennen an.
+     * Zeigt die Standard-Statistik (Siege) und
+     * detaillierte Ergebnisse (Zeiten) für alle gespeicherten Rennen.
      * <p>
-     * <strong>Standard-Statistik</strong>: Anzahl Siege
-     * (pro Fahrername, Motorradtyp, Land).
-     * <p>
-     * <strong>Detaillierte Rennergebnisse</strong>:
-     * Zeit pro Fahrer, Zeitdifferenz zum Sieger, Streckeninfos,
-     * und Anzeige, ob ein Rennen mit Unentschieden endete.
-     * <p>
-     * Falls keine Rennen vorhanden sind, wird ein Hinweis
-     * ausgegeben.
+     * Ist die Liste leer, erscheint ein Hinweis.
      */
     public void zeigeStatistik() {
         if (renndatenListe.isEmpty()) {
@@ -84,26 +59,29 @@ public class StatistikManager {
             return;
         }
 
-        // =========== TEIL 1: Standard-Statistik ===========
+        // 1) Standard-Statistik
         HashMap<String, Integer> siegeProFahrer = new HashMap<>();
         HashMap<String, Integer> siegeProMoto = new HashMap<>();
         HashMap<String, Integer> siegeProLand = new HashMap<>();
 
         for (Renndaten rd : renndatenListe) {
             Fahrer sieger = rd.getSieger();
-            if (sieger == null) continue; // unentschieden => kein Sieger
+            if (sieger == null) continue; // unentschieden
 
             String fahrerName = sieger.getFahrerName();
-            siegeProFahrer.put(fahrerName, siegeProFahrer.getOrDefault(fahrerName, 0) + 1);
+            siegeProFahrer.put(fahrerName,
+                    siegeProFahrer.getOrDefault(fahrerName, 0) + 1);
 
             Motorrad moto = rd.getRennen().getMotorrad(sieger);
             if (moto != null) {
                 String mName = moto.getClass().getSimpleName();
-                siegeProMoto.put(mName, siegeProMoto.getOrDefault(mName, 0) + 1);
+                siegeProMoto.put(mName,
+                        siegeProMoto.getOrDefault(mName, 0) + 1);
             }
 
             String land = sieger.getLand();
-            siegeProLand.put(land, siegeProLand.getOrDefault(land, 0) + 1);
+            siegeProLand.put(land,
+                    siegeProLand.getOrDefault(land, 0) + 1);
         }
 
         System.out.println("\n=== Standard-Statistik (Siege) ===");
@@ -122,7 +100,7 @@ public class StatistikManager {
                 System.out.println("  " + l + ": " + c)
         );
 
-        // =========== TEIL 2: Detaillierte Ergebnisse ===========
+        // 2) Detaillierte Ergebnisse
         System.out.println("\n=== Detaillierte Rennergebnisse ===");
 
         for (int i = 0; i < renndatenListe.size(); i++) {
@@ -133,9 +111,7 @@ public class StatistikManager {
                     + " (Länge=" + r.getStrecke().getLaenge()
                     + ", Schwierigkeit=" + r.getStrecke().getSchwierigkeitsgrad() + ")");
 
-            // Fahrer -> Zeit
             HashMap<Fahrer, Double> times = rd.getZeiten();
-            // Sortieren nach Zeit
             List<Fahrer> sortedFahrer = new ArrayList<>(times.keySet());
             sortedFahrer.sort(Comparator.comparingDouble(times::get));
 

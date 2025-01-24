@@ -5,44 +5,26 @@ import java.util.List;
 import java.util.HashMap;
 
 /**
- * Die Klasse {@code BetManager} verwaltet die vom Benutzer
- * platzierten Wetten und das Guthaben des Benutzers.
+ * Verwaltet alle {@link Bet} (Wetten) und das Guthaben
+ * eines Benutzers.
  * <p>
- * Beim Platzieren einer Wette wird der Einsatz vom Guthaben
- * abgezogen. Wenn das Rennen beendet ist, wird der Sieger
- * ermittelt und die Methode {@link #checkBets(String)} zahlt
- * Gewinne aus und aktualisiert das Guthaben.
- * <p>
- * Folgende Hauptaufgaben werden hier erledigt:
- * <ul>
- *   <li>Verwaltung des Benutzer-Guthabens ({@code userBalance})</li>
- *   <li>Speichern aller Wetten in einer Liste ({@code bets})</li>
- *   <li>Abziehen des Wetteinsatzes beim Hinzufügen einer Wette</li>
- *   <li>Auszahlung von Gewinnen bei eindeutigem Sieger</li>
- *   <li>Anzeigen aller platzierten Wetten und deren Einsätze</li>
- * </ul>
+ * - Platzieren einer Wette mit {@link #addBet(Bet)}
+ * - Anzeigen mit {@link #showAllBets()}
+ * - Auswerten mit {@link #checkBets(String)}
+ * - Kontostand mit {@link #getUserBalance()}
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 23.01.2025
  */
 public class BetManager {
 
-    /**
-     * Eine Liste aller {@link Bet}-Objekte, die der Benutzer
-     * vor Start des Rennens platziert hat.
-     */
     private List<Bet> bets;
-
-    /**
-     * Das aktuelle Guthaben des Benutzers.
-     */
     private double userBalance;
 
     /**
-     * Erstellt einen neuen {@code BetManager}, der die Wetten
-     * des Benutzers und dessen Guthaben verwaltet.
+     * Erzeugt einen {@code BetManager} mit Startguthaben.
      *
-     * @param startBalance das Anfangsguthaben des Benutzers
+     * @param startBalance Anfangsguthaben
      */
     public BetManager(double startBalance) {
         this.bets = new ArrayList<>();
@@ -50,14 +32,10 @@ public class BetManager {
     }
 
     /**
-     * Fügt eine neue Wette hinzu, sofern ausreichend Guthaben vorhanden ist.
-     * <p>
-     * Der Einsatz wird sofort vom Guthaben abgezogen. Falls das Guthaben
-     * nicht ausreicht, wird die Wette nicht gespeichert.
+     * Fügt eine Wette hinzu, falls genug Guthaben vorhanden.
      *
-     * @param bet die zu platzierende Wette
-     * @return {@code true}, wenn die Wette erfolgreich hinzugefügt wurde,
-     *         {@code false}, wenn nicht genug Guthaben vorhanden ist
+     * @param bet die Wette
+     * @return true bei Erfolg, sonst false
      */
     public boolean addBet(Bet bet) {
         if (bet.getEinsatz() > userBalance) {
@@ -69,11 +47,8 @@ public class BetManager {
     }
 
     /**
-     * Gibt alle laufenden Wetten zusammen mit den jeweiligen
-     * Einsätzen und dem aktuellen Guthaben auf der Konsole aus.
-     * <p>
-     * Falls keine Wetten vorliegen, wird dies entsprechend
-     * ausgegeben.
+     * Zeigt alle laufenden Wetten und das aktuelle Guthaben.
+     * Gibt "Keine Wetten vorhanden." aus, wenn {@code bets} leer.
      */
     public void showAllBets() {
         if (bets.isEmpty()) {
@@ -99,18 +74,11 @@ public class BetManager {
     }
 
     /**
-     * Überprüft nach Ende eines Rennens, ob es einen eindeutigen
-     * Sieger gibt und zahlt eventuelle Gewinne aus.
-     * <p>
-     * Wenn {@code siegerName} leer oder {@code null} ist, gilt das Rennen
-     * als unentschieden, und alle Einsätze sind verloren. Wenn ein
-     * eindeutiger Sieger existiert, erhält der Benutzer für jede
-     * richtige Wette das Doppelte des Einsatzes.
+     * Prüft nach Rennende, ob ein eindeutiger Sieger existiert,
+     * zahlt Gewinne aus (2-facher Einsatz) und leert die Wetten.
      *
-     * @param siegerName der Name des siegreichen Fahrers (oder {@code ""}/{@code null} bei Unentschieden)
-     * @return die Gesamtsumme, die dem Benutzer als Gewinn
-     *         gutgeschrieben wird (falls keine richtige Wette
-     *         existiert, wird {@code 0.0} zurückgegeben)
+     * @param siegerName Name des Siegers oder "" bei Unentschieden
+     * @return Gesamte Gewinnsumme (oder 0.0)
      */
     public double checkBets(String siegerName) {
         if (bets.isEmpty()) {
@@ -129,8 +97,7 @@ public class BetManager {
         for (Bet b : bets) {
             if (b.getFahrerName().equalsIgnoreCase(siegerName)) {
                 anyWin = true;
-                double plus = b.getEinsatz() * 2;
-                totalWin += plus;
+                totalWin += (b.getEinsatz() * 2);
             }
         }
 
@@ -145,9 +112,7 @@ public class BetManager {
     }
 
     /**
-     * Liefert das aktuelle Guthaben des Benutzers zurück.
-     *
-     * @return der aktuelle Kontostand
+     * @return aktuelles Guthaben
      */
     public double getUserBalance() {
         return userBalance;

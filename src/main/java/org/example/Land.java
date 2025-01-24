@@ -1,28 +1,29 @@
 package org.example;
 
 /**
- * Repräsentiert ein Land mit Name und Skill (Erfahrung/Kompetenz).
+ * Einfaches Land-Objekt mit Name.
+ * (Skill wird aktuell nicht weiterverwendet.)
  *
  * @author Piera Blum
- * @version 1.0
+ * @version 23.01.2025
  */
 public class Land {
     private String name;
 
     /**
-     * Konstruktor
+     * Erzeugt ein {@code Land}-Objekt.
+     *
      * @param name  Name des Landes
-     * @param skill Skill (1-10)
+     * @param skill Skill-Faktor (1-10, aktuell ungenutzt)
      */
     public Land(String name, int skill) {
         this.name = name;
     }
 
     /**
-     * @return name
+     * @return Name des Landes
      */
     public String getName() {
         return name;
     }
-
 }

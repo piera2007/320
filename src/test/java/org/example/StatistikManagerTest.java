@@ -3,11 +3,6 @@ package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-/**
- * Testet die Klasse {@link StatistikManager}.
- */
 class StatistikManagerTest {
 
     private StatistikManager manager;
@@ -20,14 +15,8 @@ class StatistikManagerTest {
     @Test
     void testAddRennenNotStarted() {
         Rennen rennen = new Rennen(new Rennstrecke("Test", 2.0, 2));
-        // Noch nie gestartet => sollte nicht aufgenommen werden
         manager.addRennen(rennen);
-        // Rufe manager.zeigeStatistik() auf -> keine Ausnahmen, aber "Keine Rennen abgeschlossen"
-        // Testen wir minimal
-        // Evtl. Assertions durch Umleiten System.out oder Auswertung, ob man EINE leere Liste hat
-        // Hier minimal:
         manager.zeigeStatistik();
-        // Schau in Konsole, ob "Keine Rennen abgeschlossen" erscheint
     }
 
     @Test
@@ -40,9 +29,6 @@ class StatistikManagerTest {
         rennen.starteRennen(1);
 
         manager.addRennen(rennen);
-        // Hier könnte man SystemOut-Umleitung machen,
-        // oder einfach checken, ob es keine Exceptions gibt
-        // Minimales Coverage
         manager.zeigeStatistik();
     }
 }
