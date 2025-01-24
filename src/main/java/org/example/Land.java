@@ -5,7 +5,7 @@ package org.example;
  * (Skill wird aktuell nicht weiterverwendet.)
  *
  * @author Piera Blum
- * @version 23.01.2025
+ * @version 24.01.2025
  */
 public class Land {
     private String name;

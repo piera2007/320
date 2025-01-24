@@ -20,7 +20,7 @@ import java.util.Comparator;
  * </ul>
  *
  * @author
- * @version 23.01.2025
+ * @version 24.01.2025
  */
 public class StatistikManager {
 

@@ -11,7 +11,7 @@ package org.example;
  * Diese bestimmen die Grundeigenschaften des Motorrads.
  *
  * @author
- * @version 23.01.2025
+ * @version 24.01.2025
  */
 public abstract class Motorrad implements IFahrzeug {
 

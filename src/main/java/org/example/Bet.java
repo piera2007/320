@@ -7,7 +7,7 @@ package org.example;
  * Wird in {@link BetManager} verwaltet.
  *
  * @author Piera Blum
- * @version 23.01.2025
+ * @version 24.01.2025
  */
 public class Bet {
 

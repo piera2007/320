@@ -8,7 +8,7 @@ package org.example;
  * konkretisiert.
  *
  * @author Piera Blum
- * @version 23.01.2025
+ * @version 24.01.2025
  */
 public interface IFahrzeug {
     String getMarke();

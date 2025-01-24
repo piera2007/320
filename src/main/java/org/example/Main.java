@@ -21,8 +21,8 @@ import java.util.Scanner;
  * <p>
  * Programm endet erst bei Auswahl von Punkt 6.
  *
- * @author
- * @version 23.01.2025
+ * @author Piera Blum
+ * @version 24.01.2025
  */
 public class Main {
 
@@ -79,6 +79,7 @@ public class Main {
 
     /**
      * Legt ein neues Rennen an, falls kein ungestartetes existiert.
+     * Fragt mehrfach, bis der Benutzer mindestens 2 Fahrer eingibt.
      */
     private static void rennenAnlegen() {
         if (aktuellesRennen != null && !aktuellesRennen.isStarted()) {
@@ -91,13 +92,15 @@ public class Main {
         Rennen rennen = new Rennen(strecke);
 
         int anzahl;
-        do {
-            System.out.print("Wie viele Fahrer? (mind 2): ");
+        while (true) {
+            System.out.print("Wie viele Fahrer? (mind. 2): ");
             anzahl = leseInt();
             if (anzahl < 2) {
-                System.out.println("Mindestens 2 Fahrer nötig!");
+                System.out.println("Mindestens 2 Fahrer nötig! Bitte erneut eingeben.\n");
+            } else {
+                break;
             }
-        } while (anzahl < 2);
+        }
 
         for (int i = 1; i <= anzahl; i++) {
             System.out.println("\nFahrer " + i + ":");
@@ -155,6 +158,7 @@ public class Main {
 
     /**
      * Startet das angelegte Rennen, falls vorhanden.
+     * Fragt so lange nach der Rundenanzahl, bis min. 1 Runde eingegeben wird.
      */
     private static void rennenStarten() {
         if (aktuellesRennen == null) {
@@ -165,9 +169,19 @@ public class Main {
             System.out.println("Rennen schon gestartet!");
             return;
         }
-        System.out.print("Wie viele Runden? ");
-        int r = leseInt();
-        if (r < 1) r = 1;
+
+        int r;
+        while (true) {
+            System.out.print("Wie viele Runden? (mindestens 1): ");
+            r = leseInt();
+
+            if (r < 1) {
+                System.out.println("Fehler: Die Rundenanzahl darf nicht < 1 sein!");
+                System.out.println("Bitte erneut eingeben.\n");
+            } else {
+                break;
+            }
+        }
 
         try {
             aktuellesRennen.starteRennen(r);
@@ -203,13 +217,12 @@ public class Main {
 
         int erf;
         while(true) {
-            System.out.print("Jahre Erfahrung (0..50): ");
+            System.out.print("Jahre Erfahrung (0..90): ");
             erf = leseInt();
             if (erf < 0) {
                 System.out.println("Nicht negativ!");
-            } else if (erf > 50) {
-                System.out.println("Max 50. Nehme 50.");
-                erf = 50;
+            } else if (erf > 90) {
+                System.out.println("Max 90. Nehme 90.");
                 break;
             } else {
                 break;
@@ -225,22 +238,31 @@ public class Main {
      * @return das gewählte Motorrad
      */
     private static Motorrad waehleMotorrad(Motorrad[] arr) {
-        System.out.println("Verfügbare Motorräder (nach Schwierigkeit):");
-        for (int i = 0; i < arr.length; i++) {
-            Motorrad m = arr[i];
-            System.out.println((i+1) + ") " + m.getClass().getSimpleName()
-                    + " [" + m.getMarke() + " " + m.getModell()
-                    + ", Speed=" + m.getGeschwindigkeit()
-                    + ", Acc=" + m.getBeschleunigung() + "]");
+        while (true) {
+            System.out.println("Verfügbare Motorräder (nach Schwierigkeit):");
+            for (int i = 0; i < arr.length; i++) {
+                Motorrad m = arr[i];
+                System.out.println((i + 1) + ") " + m.getClass().getSimpleName()
+                        + " [" + m.getMarke() + " " + m.getModell()
+                        + ", Speed=" + m.getGeschwindigkeit()
+                        + ", Acc=" + m.getBeschleunigung() + "]");
+            }
+
+            System.out.print("Ihre Wahl (1-" + arr.length + "): ");
+            int wahl = leseInt(); // z. B. Eingabe "1" => 1
+
+            // Index wäre wahl - 1
+            int index = wahl - 1;
+
+            if (index < 0 || index >= arr.length) {
+                System.out.println("Ungültige Wahl! Bitte erneut versuchen.\n");
+            } else {
+                // Gültiger Index => passendes Motorrad zurückgeben
+                return arr[index];
+            }
         }
-        System.out.print("Ihre Wahl: ");
-        int w = leseInt() - 1;
-        if (w < 0 || w >= arr.length) {
-            w = 0;
-            System.out.println("Ungültig, nehme " + arr[0].getClass().getSimpleName());
-        }
-        return arr[w];
     }
+
 
     /**
      * Lässt den Benutzer eine {@link Rennstrecke} aus
@@ -250,25 +272,29 @@ public class Main {
      */
     private static Rennstrecke waehleStrecke() {
         Rennstrecke[] arr = StreckenListe.getAlleStrecken();
-        System.out.println("Verfügbare Strecken:");
-        for (int i = 0; i < arr.length; i++) {
-            Rennstrecke rs = arr[i];
-            System.out.println((i+1) + ") " + rs.getName()
-                    + " (Länge=" + rs.getLaenge()
-                    + ", Schwierigkeit=" + rs.getSchwierigkeitsgrad() + ")");
+
+        while (true) {
+            System.out.println("Verfügbare Strecken:");
+            for (int i = 0; i < arr.length; i++) {
+                Rennstrecke rs = arr[i];
+                System.out.println((i + 1) + ") " + rs.getName()
+                        + " (Länge=" + rs.getLaenge()
+                        + ", Schwierigkeit=" + rs.getSchwierigkeitsgrad() + ")");
+            }
+            System.out.print("Ihre Wahl (1-" + arr.length + "): ");
+            int index = leseInt() - 1;
+
+            if (index < 0 || index >= arr.length) {
+                System.out.println("Ungültige Wahl! Bitte erneut versuchen.\n");
+            } else {
+                return arr[index];
+            }
         }
-        System.out.print("Ihre Wahl: ");
-        int ind = leseInt() - 1;
-        if (ind < 0 || ind >= arr.length) {
-            ind = 0;
-            System.out.println("Ungültig, nehme " + arr[0].getName());
-        }
-        return arr[ind];
     }
 
     /**
      * Liest eine Ganzzahl. Gibt bei fehlerhafter Eingabe
-     * "Ungültige Eingabe. Ganzzahl:" aus und fragt erneut.
+     * "Ungültige Eingabe. Versuche es nochmal:" aus und fragt erneut.
      *
      * @return int-Wert
      */
@@ -278,7 +304,7 @@ public class Main {
             try {
                 return Integer.parseInt(inp);
             } catch(NumberFormatException e) {
-                System.out.print("Ungültige Eingabe. Ganzzahl: ");
+                System.out.print("Ungültige Eingabe. Versuche es nochmal: ");
             }
         }
     }
